@@ -10,7 +10,7 @@ ext_modules = [
         define_macros = [('VERSION_INFO', __version__)],
         cxx_std=20,
         extra_compile_args=["-O3", "-fopenmp", "-D_GLIBCXX_PARALLEL", "-march=native", "-mtune=native"],
-        extra_link_args=["-lgomp"]
+        extra_link_args=["-lgomp", "-ltbb"]
         ),
 ]
 
