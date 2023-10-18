@@ -1,17 +1,30 @@
 from pybind11.setup_helpers import Pybind11Extension, build_ext
 from setuptools import setup
+import platform
+
+
+ld_flags = ["-lgomp"]
+if platform.freedesktop_os_release()["ID"] == "fedora":
+    ld_flags.append("-ltbb")
 
 __version__ = "0.0.1"
 
 ext_modules = [
-    Pybind11Extension("midia_cpp",
+    Pybind11Extension(
+        "midia_cpp",
         ["src/main.cpp"],
         # Example: passing in the version to the compiled code
-        define_macros = [('VERSION_INFO', __version__)],
+        define_macros=[("VERSION_INFO", __version__)],
         cxx_std=20,
-        extra_compile_args=["-O3", "-fopenmp", "-D_GLIBCXX_PARALLEL", "-march=native", "-mtune=native"],
-        extra_link_args=["-lgomp", "-ltbb"]
-        ),
+        extra_compile_args=[
+            "-O3",
+            "-fopenmp",
+            "-D_GLIBCXX_PARALLEL",
+            "-march=native",
+            "-mtune=native",
+        ],
+        extra_link_args=ld_flags,
+    ),
 ]
 
 setup(
