@@ -4,8 +4,21 @@ import platform
 
 
 ld_flags = ["-lgomp"]
-if platform.freedesktop_os_release()["ID"] == "fedora":
-    ld_flags.append("-ltbb")
+
+
+def has_tbb():
+    import subprocess
+
+    proc = subprocess.run(
+        """echo "int main() {}" | gcc -ltbb -xc - -o /dev/null""",
+        shell=True,
+        capture_output=True,
+    )
+    return proc.returncode == 0
+
+
+if has_tbb():
+    ld_flags.append("-ltbb")  # Does no harm if present but not needed
 
 __version__ = "0.0.1"
 
