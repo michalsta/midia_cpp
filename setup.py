@@ -33,8 +33,6 @@ ext_modules = [
             "-O3",
             "-fopenmp",
             "-D_GLIBCXX_PARALLEL",
-            "-march=native",
-            "-mtune=native",
         ],
         extra_link_args=ld_flags,
     ),
